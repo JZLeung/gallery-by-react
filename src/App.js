@@ -26,6 +26,9 @@ var CONSTANTS = {
 }
 
 class App extends Component {
+    /**
+     * 初始化函数，在这里就开始初始化每一张图片的初始位置和信息。
+     */
     constructor(props) {
         super(props)
         this.state = {
@@ -35,18 +38,25 @@ class App extends Component {
                         top: 0,
                         left: 0
                     },
-                    rotate: 0
+                    rotate: 0,
+                    isInverse: false,
+                    isCenter: false
                 }
             })
         }
+        this.inverse = this.inverse.bind(this)
     }
 
+    /**
+     * 当组件完成挂载后，将初始化 CONSTANTS 常量变量组。
+     */
     componentDidMount() {
         console.log('componentDidMount')
         let stage = DOM.findDOMNode(this.refs.stage),
             image = DOM.findDOMNode(this.refs.image0)
         console.log(stage.scrollWidth, stage.scrollHeight, image.offsetWidth, image.offsetHeight)
         let _self = this
+        // 此处要等第一张图片完全加载完成后才能拿到每个 figure 的真正高度，再初始化。
         image.querySelector('img').onload = function() {
             console.log(stage.scrollWidth, stage.scrollHeight, image.offsetWidth, image.offsetHeight)
             CONSTANTS = GenerateConstant(stage.scrollWidth, stage.scrollHeight, image.offsetWidth, image.offsetHeight)
@@ -55,13 +65,19 @@ class App extends Component {
         }
     }
 
+    /**
+     * 重置所有图片位置的函数
+     * @param   centerIndex 需要居中的图片索引下标
+     */
     resetImagePosition(centerIndex) {
         let allImages = this.state.imgRange
         // 处理正中的元素
         let centerImages = allImages.splice(centerIndex, 1)
         centerImages[0] = {
             pos: CONSTANTS.center,
-            rotate: 0
+            rotate: 0,
+            isInverse: false,
+            isCenter: true
         }
 
         // 处理上方的元素，个数为一个或没有
@@ -107,11 +123,40 @@ class App extends Component {
         })
     }
 
+    /**
+     * 翻转图片
+     * @param   reverseIndex    需要翻转的图片的索引下标
+     * @return  闭包函数，可同时供 ImageFigure 和 ControllerUtil 调用，并缓存需要翻转的图片。
+     */
+    inverse(reverseIndex) {
+        return function() {
+            console.log(this)
+            let imgRange = this.state.imgRange
+            imgRange[reverseIndex].isInverse = !imgRange[reverseIndex].isInverse
+            this.setState({
+                imgRange
+            })
+        }.bind(this)
+    }
+
+    resetPos(centerIndex) {
+        return function() {
+            this.resetImagePosition(centerIndex)
+        }.bind(this)
+    }
+
+    // 渲染函数
     render() {
 
         const images = ImageArray.map((image, index) => {
 
-            return <Image data={image} key={index} range={this.state.imgRange[index]} ref={'image' + index} />
+            return <Image 
+                data={image} 
+                key={index} 
+                range={this.state.imgRange[index]} 
+                ref={'image' + index} 
+                inverse={this.inverse(index)}
+                center={this.resetPos(index)}/>
         })
 
         return (
