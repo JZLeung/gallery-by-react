@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import DOM from 'react-dom'
 
 import Image from './components/figure'
+import ControllerUnit from './components/controller'
 
 import GenerateImage from './utils/image'
 import GenerateConstant from './utils/constant'
@@ -70,6 +71,7 @@ class App extends Component {
      * @param   centerIndex 需要居中的图片索引下标
      */
     resetImagePosition(centerIndex) {
+        console.log(`centerIndex: ${centerIndex}`)
         let allImages = this.state.imgRange
         // 处理正中的元素
         let centerImages = allImages.splice(centerIndex, 1)
@@ -110,13 +112,13 @@ class App extends Component {
             }
         })
         
-        // 合并居中元素
-        allImages.splice(centerIndex, 0, centerImages[0])
         // 合并上方元素
         if (topImages && topImages.length > 0 && topImages[0]) {
             // console.log('top', topImages[0])
             allImages.splice(topIndex, 0, topImages[0])
         }
+        // 合并居中元素
+        allImages.splice(centerIndex, 0, centerImages[0])
         // console.log(allImages)
         this.setState({
             imgRange: allImages
@@ -130,7 +132,6 @@ class App extends Component {
      */
     inverse(reverseIndex) {
         return function() {
-            console.log(this)
             let imgRange = this.state.imgRange
             imgRange[reverseIndex].isInverse = !imgRange[reverseIndex].isInverse
             this.setState({
@@ -141,6 +142,7 @@ class App extends Component {
 
     resetPos(centerIndex) {
         return function() {
+            console.log(`resetPos: ${centerIndex}`)
             this.resetImagePosition(centerIndex)
         }.bind(this)
     }
@@ -153,8 +155,17 @@ class App extends Component {
             return <Image 
                 data={image} 
                 key={index} 
+                index={index} 
                 range={this.state.imgRange[index]} 
                 ref={'image' + index} 
+                inverse={this.inverse(index)}
+                center={this.resetPos(index)}/>
+        })
+
+        const controllers = ImageArray.map((image, index) => {
+            return <ControllerUnit
+                key={index}
+                range={this.state.imgRange[index]} 
                 inverse={this.inverse(index)}
                 center={this.resetPos(index)}/>
         })
@@ -165,6 +176,7 @@ class App extends Component {
                     {images}
                 </section>
                 <nav className="controller-sec">
+                    {controllers}
                 </nav>
             </div>
         )

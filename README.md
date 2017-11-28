@@ -16,7 +16,7 @@
 
     查看 `package.json` 可以得知，运行的实际脚本是 `react-script` ，进入该 module 发现，webpack 的配置文件就是在脚本里面。
 
-    因此每次需要手动修改 webpack 的配置，该配置文件为： ./node_modules/react-scripts/config/webpack.config.dev.js 和 ./node_modules/react-scripts/config/webpack.config.dev.js。在该俩文件中的 添加下列代码：
+    因此每次需要手动修改 webpack 的配置，该配置文件为： `./node_modules/react-scripts/config/webpack.config.dev.js` 和 `./node_modules/react-scripts/config/webpack.config.dev.js`。在该俩文件中的 添加下列代码：
     ```javascript
     module.exports = {
         ...

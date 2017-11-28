@@ -45,7 +45,7 @@ class imgFigure extends Component {
             <figure  className={className} style={styleObj} onClick={this.handleClick}>
                 <img src={this.props.data.src} alt={this.props.data.title}/>
                 <figcaption>
-                    <h2 className="img-title">{this.props.data.title}</h2>
+                    <h2 className="img-title">{this.props.index}{this.props.data.title}</h2>
                 </figcaption>
                 <section className="img-desc"  onClick={this.handleClick}>
                     {this.props.data.desc}
