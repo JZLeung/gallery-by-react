@@ -5,6 +5,9 @@ html, body{
     height: 100%;
     width: 100%;
 }
+html, body, #root, .stage {
+    height: 100%;
+}
 img{
     width: 100%;
 }
@@ -17,7 +20,7 @@ img{
 .stage{
     position: relative;
     width: 100%;
-    height: 680px;
+    // height: 680px;
 }
 
 .img-sec{
