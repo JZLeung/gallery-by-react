@@ -28,6 +28,37 @@
 
 3.  处理 scss/sass 文件
 
+    ####   处理方法一（脚手架[官方推荐](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md#adding-a-css-preprocessor-sass-less-etc)）：
+
+    先安装  [node-sass-chokidar](https://github.com/michaelwayman/node-sass-chokidar)  ： `yarn add node-sass-chokidar`
+
+    在 `package.json` 添加新的命令：
+
+    ```json
+    {
+    "scripts": {
+        "build-css": "node-sass-chokidar src/ -o src/",
+        "watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
+        "start-js": "react-scripts start",
+        "start": "npm-run-all -p watch-css start-js",
+        "build-js": "react-scripts build",
+        "build": "npm-run-all build-css build-js",
+    }
+    }
+    ```
+
+    至于为什么使用该插件而不直接使用 node-sass 配合 sass-loader，官方给出了这样的答案：
+
+    >   **Why node-sass-chokidar?**
+    >     `node-sass` has been reported as having the following issues:
+    >
+    >   -   `node-sass --watch` has been reported to have *performance issues* in certain conditions when used in a virtual machine or with docker.
+    >   -   Infinite styles compiling [#1939](https://github.com/facebookincubator/create-react-app/issues/1939)
+    >   -   `node-sass` has been reported as having issues with detecting new files in a directory [#1891](https://github.com/sass/node-sass/issues/1891)
+    >       `node-sass-chokidar` is used here as it addresses these issues.
+
+    ####   处理方法二：
+
     脚手架原生的项目仅支持 css 文件。如果需要 webpack 处理 scss/sass 的文件的话，需要手动修改 webpack 的配置，该配置文件为： `./node_modules/react-scripts/config/webpack.config.dev.js` 和 `./node_modules/react-scripts/config/webpack.config.dev.js`。在该俩文件中的 添加下列代码：
 
     ```javascript

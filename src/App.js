@@ -183,5 +183,5 @@ class App extends Component {
     }
 }
 
-require('./style/index.scss')
+
 export default App
