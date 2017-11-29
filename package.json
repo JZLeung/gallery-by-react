@@ -9,9 +9,14 @@
     "react-scripts": "1.0.17"
   },
   "scripts": {
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
+  },
+  "homepage": "https://jzleung.github.io/gallery-by-react",
+  "devDependencies": {
+    "gh-pages": "^1.1.0"
   }
 }
