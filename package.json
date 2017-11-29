@@ -13,7 +13,7 @@
   "scripts": {
     "build-css": "node-sass-chokidar src/ -o src/",
     "watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
-    "deploy": "gh-pages -d build",
+    "deploy": "npm-run-all build-css build-js && git add ./build && git commit -m \"`date '+%Y%m%d-%H:%M:%S'` :Deploy To GitPage.\" && git subtree push --prefix=build origin gh-pages",
     "start-js": "react-scripts start",
     "start": "npm-run-all -p watch-css start-js",
     "build-js": "react-scripts build",
@@ -21,7 +21,5 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
-  "devDependencies": {
-    "gh-pages": "^1.1.0"
-  }
+  "devDependencies": {}
 }
