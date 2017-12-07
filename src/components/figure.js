@@ -1,30 +1,21 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 
+import {observer} from "mobx-react"
+import store from '../store'
+
+@observer
 class imgFigure extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            styleObj: {}
-        }
-        this.handleClick = this.handleClick.bind(this)
-    }
 
     // 处理图片点击事件
     handleClick(ev) {
         ev.stopPropagation()
         ev.preventDefault()
-        if (this.props.range.isCenter) {
-            this.props.inverse()
-        } else {
-            this.props.center()
-        }
+        console.log('clicked: ', this.props.index)
+        store.click(this.props.index)
     }
-    // componentWillUpdate() {
-    //     return true
-    // }
+    
     render() {
         let styleObj = {}
-        // console.log(this.props.range)
         if (this.props.range.pos) {
             styleObj.left = this.props.range.pos.left
             styleObj.top = this.props.range.pos.top
@@ -42,12 +33,12 @@ class imgFigure extends Component {
         let className = ['img-figure', this.props.range.isInverse ? 'is-inverse' : ''].join(' ')
 
         return (
-            <figure  className={className} style={styleObj} onClick={this.handleClick}>
+            <figure  className={className} style={styleObj}  onClick={this.handleClick.bind(this)}>
                 <img src={this.props.data.src} alt={this.props.data.title}/>
                 <figcaption>
                     <h2 className="img-title">{this.props.index}{this.props.data.title}</h2>
                 </figcaption>
-                <section className="img-desc"  onClick={this.handleClick}>
+                <section className="img-desc"  onClick={this.handleClick.bind(this)}>
                     {this.props.data.desc}
                 </section>
             </figure>
