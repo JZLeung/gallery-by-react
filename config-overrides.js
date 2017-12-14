@@ -8,6 +8,7 @@ module.exports = function override(config, env) {
   if (env === "production") {
     console.log("⚡ Production build with Preact")
     config = rewirePreact(config, env)
+    config.output.publicPath = './'
   }
   
   // use the MobX rewire

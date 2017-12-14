@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import DOM from 'react-dom'
-import MobxDev from 'mobx-react-devtools'
+// import MobxDev from 'mobx-react-devtools'
 
 import Image from './components/figure'
 import ControllerUnit from './components/controller'
@@ -87,7 +87,6 @@ class App extends Component {
                 <nav className="controller-sec">
                     {controllers}
                 </nav>
-                <MobxDev />
             </div>
         )
     }
